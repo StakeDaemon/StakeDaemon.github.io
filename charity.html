@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>StakeDaemon — Charity Proof</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .charity-wrap {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .charity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+    .charity-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid #111;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 6px 24px rgba(255,255,255,0.05);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .charity-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(255,255,255,0.08);
+    }
+    .charity-card h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    .charity-detail {
+      margin-top: 8px;
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+    .charity-detail span {
+      color: #fff;
+      font-weight: 600;
+    }
+    .charity-detail a {
+      color: #4da6ff;
+      text-decoration: none;
+    }
+    .charity-detail a:hover {
+      text-decoration: underline;
+    }
+    .status-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      margin-top: 12px;
+      font-weight: 600;
+      background: #0a0a0a;
+      border: 1px solid #222;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="logo">🐉 StakeDaemon</div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="calculator.html">Calculator</a>
+        <a href="charity.html">Charity</a>
+        <a href="about.html">About</a> <!-- ✅ Added for consistency -->
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="joinnow.html" class="btn">Join Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="charity-wrap">
+      <h2>🌍 Charity Transparency</h2>
+      <p class="small-muted">We donate 1–5% of profits to real charities. Each card shows proof of donation with transaction IDs for full transparency.</p>
+
+      <div class="charity-grid" style="margin-top:24px;">
+        
+        <!-- Example charity card -->
+        <div class="charity-card">
+          <h3>Charity Name Here (Demo)</h3>
+          <div class="charity-detail">Amount Donated: <span>$250 (0.01 BTC)</span></div>
+          <div class="charity-detail">Transaction ID: 
+            <span><a href="#" target="_blank">0x123...abcd</a></span>
+          </div>
+          <div class="status-tag">✅ Verified</div>
+        </div>
+
+        <!-- Blank card to duplicate -->
+        <div class="charity-card">
+          <h3>[Charity Name]</h3>
+          <div class="charity-detail">Amount Donated: <span>[Fill here]</span></div>
+          <div class="charity-detail">Transaction ID: 
+            <span><a href="#" target="_blank">[Tx ID]</a></span>
+          </div>
+          <div class="status-tag">⏳ Pending</div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer style="margin-top:40px;">
+    <div class="container small-muted">© 2025 StakeDaemon • Charity donations are updated regularly with blockchain proof.</div>
+  </footer>
+
+</body>
+</html>

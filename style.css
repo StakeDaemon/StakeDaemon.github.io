@@ -1,0 +1,211 @@
+/* style.css - StakeDaemon (Black background, white text only) */
+
+/* ===== Global ===== */
+:root {
+  --bg: #000000;
+  --fg: #ffffff;
+  --muted: #cfcfcf; /* for subtle secondary text if needed */
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+html,body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+/* Links: white only */
+a { color: var(--fg); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== Layout Utilities ===== */
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+  padding: 30px 0;
+}
+
+/* Vertical spacing helpers */
+.spacer { height: 24px; }
+.spacer-sm { height: 12px; }
+.spacer-lg { height: 48px; }
+
+/* ===== Navbar ===== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(0,0,0,0.95);
+  border-bottom: 1px solid #111;
+  backdrop-filter: blur(4px);
+  padding: 12px 0;
+}
+.navbar .nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(1100px, 92%);
+  margin: 0 auto;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+  color: var(--fg);
+}
+.nav-links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.nav-links a {
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 6px 8px;
+}
+
+/* Join button (white text only, transparent background) */
+.btn {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--fg);
+  color: var(--fg);
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+.btn:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+/* ===== Hero / Headings ===== */
+.hero {
+  padding: 72px 0;
+  text-align: left;
+}
+.hero h1 {
+  font-size: 2.1rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.hero p {
+  color: var(--muted);
+  max-width: 900px;
+  margin-bottom: 18px;
+}
+
+/* Headings */
+h2 {
+  font-size: 1.35rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+h3 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* ===== Cards ===== */
+.row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid #111;
+  border-radius: var(--radius);
+  padding: 18px;
+  flex: 1 1 280px;
+  min-width: 220px;
+}
+.card.lead {
+  flex: 2 1 520px;
+}
+
+/* ===== Forms & Inputs ===== */
+label {
+  display: block;
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+  color: var(--fg);
+}
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #222;
+  background: #0b0b0b;
+  color: var(--fg);
+  outline: none;
+  font-size: 1rem;
+}
+input::placeholder, textarea::placeholder {
+  color: #9b9b9b;
+}
+
+/* Form submit in white style */
+.form-row { display: flex; gap: 12px; align-items: center; }
+.form-row .btn { flex-shrink: 0; }
+
+/* ===== Tables ===== */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  color: var(--fg);
+}
+.table th, .table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #111;
+  text-align: left;
+  font-size: 0.95rem;
+}
+.table th { font-weight: 600; }
+
+/* ===== Lists / Features ===== */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.feature {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid #111;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+/* ===== Footer ===== */
+footer {
+  border-top: 1px solid #111;
+  padding: 28px 0;
+  text-align: center;
+  color: #bdbdbd;
+  font-size: 0.95rem;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 860px) {
+  .nav-links { display: none; } /* keep it simple; add a hamburger if needed */
+  .hero { text-align: center; }
+  .navbar .nav-inner { gap: 12px; }
+  .card.lead { min-width: 100%; }
+}

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StakeDaemon | Honest Staking Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(90deg, #2b0040, #5e00a2);
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-links a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+    .nav-links .btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      font-weight: 600;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: radial-gradient(circle at top, #1a0029, transparent);
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    /* Sections */
+    .container {
+      max-width: 1100px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    h2 {
+      border-bottom: 2px solid transparent;
+      border-image: linear-gradient(to right, #6a11cb, #2575fc);
+      border-image-slice: 1;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    /* Cards */
+    .row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .card {
+      flex: 1;
+      min-width: 280px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 20px;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+    }
+
+    /* Tables */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    .table th, .table td {
+      border: 1px solid #333;
+      padding: 10px;
+      text-align: center;
+    }
+    .table th {
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      color: #fff;
+    }
+
+    /* Features */
+    .features {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .feature {
+      flex: 1;
+      min-width: 250px;
+      padding: 15px;
+      border-left: 4px solid;
+      border-image: linear-gradient(to bottom, #6a11cb, #2575fc) 1;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    /* Footer */
+    footer {
+      background: #0a0a0a;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      border-top: 1px solid #222;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+    footer a {
+      color: #9b59ff;
+      margin: 0 8px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <div class="logo">🐉 StakeDaemon</div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="calculator.html">Calculator</a>
+        <a href="charity.html">Charity</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="joinnow.html" class="btn">Join Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero container">
+    <h1>Stake Smarter with <span style="font-weight:700;">StakeDaemon</span></h1>
+    <p>
+      StakeDaemon is a transparent, community-driven staking platform built for both <b>stablecoins</b> and <b>popular cryptocurrencies</b>.  
+      Earn competitive APY, enjoy flexible deposit options, and be part of a platform that puts <b>honesty, charity, and security</b> first.
+    </p>
+    <a href="joinnow.html" class="btn">🚀 Join Our Telegram</a>
+  </section>
+
+  <!-- Staking Plans -->
+  <section class="container">
+    <h2>📊 Staking Plans</h2>
+    <p>Choose from stablecoin and normal crypto plans, with auto or manual staking. Your rewards are fixed and transparent.</p>
+
+    <div class="row">
+      <div class="card">
+        <h3>Stablecoins</h3>
+        <table class="table">
+          <tr><th>Duration</th><th>APY</th></tr>
+          <tr><td>Weekly</td><td>12%</td></tr>
+          <tr><td>Monthly</td><td>13%</td></tr>
+          <tr><td>Quarterly</td><td>14%</td></tr>
+          <tr><td>Semi-Annual</td><td>15%</td></tr>
+          <tr><td>Annual</td><td>17%</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Normal Coins</h3>
+        <table class="table">
+          <tr><th>Duration</th><th>APY</th></tr>
+          <tr><td>Weekly</td><td>18%</td></tr>
+          <tr><td>Monthly</td><td>19%</td></tr>
+          <tr><td>Quarterly</td><td>20%</td></tr>
+          <tr><td>Semi-Annual</td><td>21%</td></tr>
+          <tr><td>Annual</td><td>23%</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deposits & Withdrawals -->
+  <section class="container">
+    <h2>💰 Deposits & Withdrawals</h2>
+    <p>
+      Deposit in your preferred coin directly to our wallet addresses.  
+      Minimum withdrawals apply per coin (check our bot for details).  
+      <b>Note:</b> Withdrawals are only processed once your staking plan has completed — ensuring fairness and stability.
+    </p>
+  </section>
+
+  <!-- Security & Trust -->
+  <section class="container">
+    <h2>🔒 Security & Trust</h2>
+    <div class="features">
+      <div class="feature">
+        <h3>Transparency</h3>
+        <p>All transactions are on-chain, no hidden tricks. Proof of charity and withdrawals are published regularly.</p>
+      </div>
+      <div class="feature">
+        <h3>No KYC</h3>
+        <p>We only require your Telegram ID and wallet address. Your privacy remains intact.</p>
+      </div>
+      <div class="feature">
+        <h3>Community Driven</h3>
+        <p>Decisions are taken with community polls and open discussions in our group.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Charity -->
+  <section class="container">
+    <h2>🌍 Charity Commitment</h2>
+    <p>
+      1–5% of StakeDaemon’s profit goes directly to global charities like <b>Team Water</b> and others that accept crypto.  
+      Together, we make staking meaningful beyond profit.
+    </p>
+    <a href="charity.html" class="btn">View Charity Proof</a>
+  </section>
+
+  <!-- Roadmap -->
+  <section class="container">
+    <h2>🛠 Roadmap</h2>
+    <ul>
+      <li>✅ Telegram Bot Launch</li>
+      <li>✅ Website Launch with Calculator</li>
+      <li>🚧 Charity Partnerships</li>
+      <li>🚀 Global Expansion, Merch & More</li>
+    </ul>
+  </section>
+
+  <!-- CTA -->
+  <section class="container" style="text-align:center;">
+    <h2>🚀 Ready to Stake with StakeDaemon?</h2>
+    <a href="joinnow.html" class="btn">Join Our Telegram Today</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 StakeDaemon. All rights reserved.  
+    <br> <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a>
+  </footer>
+
+</body>
+</html>
