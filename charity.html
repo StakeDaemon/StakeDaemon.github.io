@@ -7,58 +7,60 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
+    body {
+      background: #fffaf4;
+      color: #222;
+      font-family: 'Inter', sans-serif;
+    }
     .charity-wrap {
-      max-width: 1200px;
-      margin: 50px auto;
+      max-width: 1000px;
+      margin: 60px auto;
       padding: 20px;
+      line-height: 1.6;
     }
-    .charity-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 22px;
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      color: #222;
     }
-    .charity-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid #111;
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 6px 24px rgba(255,255,255,0.05);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-    .charity-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 36px rgba(255,255,255,0.08);
-    }
-    .charity-card h3 {
-      margin-top: 0;
-      font-size: 1.2rem;
-      color: #fff;
-    }
-    .charity-detail {
-      margin-top: 8px;
-      color: #ccc;
+    .small-muted {
       font-size: 0.95rem;
+      color: #aaa;
+      margin-bottom: 25px;
     }
-    .charity-detail span {
-      color: #fff;
-      font-weight: 600;
+    .charity-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
     }
-    .charity-detail a {
-      color: #4da6ff;
-      text-decoration: none;
-    }
-    .charity-detail a:hover {
-      text-decoration: underline;
-    }
-    .status-tag {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      margin-top: 12px;
-      font-weight: 600;
-      background: #0a0a0a;
+    .charity-table th, .charity-table td {
       border: 1px solid #222;
+      padding: 12px 15px;
+      text-align: left;
+    }
+    .charity-table th {
+      background: #111;
+      color: #fff;
+    }
+    .charity-table tr:nth-child(even) {
+      background: rgba(255,255,255,0.02);
+    }
+    .status {
+      font-weight: 600;
+    }
+    .status.verified {
+      color: #4dff91;
+    }
+    .status.pending {
+      color: #ffb84d;
+    }
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+      border-top: 1px solid #222;
+      color: #aaa;
     }
   </style>
 </head>
@@ -69,13 +71,13 @@
     <div class="nav-inner">
       <div class="logo">🐉 StakeDaemon</div>
       <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="calculator.html">Calculator</a>
-        <a href="charity.html">Charity</a>
-        <a href="about.html">About</a> <!-- ✅ Added for consistency -->
-        <a href="terms.html">Terms</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="joinnow.html" class="btn">Join Now</a>
+ <a href="index.html">Home</a>
+ <a href="calculator.html">Calculator</a>
+ <a href="charity.html">Charity</a>
+ <a href="about.html">About</a>
+ <a href="terms.html" class="active">Terms</a>
+ <a href="privacy.html">Privacy</a>
+ <a href="joinnow.html" class="btn">Join Now</a>
       </nav>
     </div>
   </header>
@@ -83,36 +85,33 @@
   <main class="container">
     <section class="charity-wrap">
       <h2>🌍 Charity Transparency</h2>
-      <p class="small-muted">We donate 1–5% of profits to real charities. Each card shows proof of donation with transaction IDs for full transparency.</p>
+      <p class="small-muted">We donate 1–5% of profits to real charities. Below are verifiable donations with transaction IDs for full transparency.</p>
 
-      <div class="charity-grid" style="margin-top:24px;">
-        
-        <!-- Example charity card -->
-        <div class="charity-card">
-          <h3>Charity Name Here (Demo)</h3>
-          <div class="charity-detail">Amount Donated: <span>$250 (0.01 BTC)</span></div>
-          <div class="charity-detail">Transaction ID: 
-            <span><a href="#" target="_blank">0x123...abcd</a></span>
-          </div>
-          <div class="status-tag">✅ Verified</div>
-        </div>
-
-        <!-- Blank card to duplicate -->
-        <div class="charity-card">
-          <h3>[Charity Name]</h3>
-          <div class="charity-detail">Amount Donated: <span>[Fill here]</span></div>
-          <div class="charity-detail">Transaction ID: 
-            <span><a href="#" target="_blank">[Tx ID]</a></span>
-          </div>
-          <div class="status-tag">⏳ Pending</div>
-        </div>
-
-      </div>
+      <table class="charity-table">
+        <tr>
+          <th>Charity</th>
+          <th>Amount Donated</th>
+          <th>Transaction ID</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>Charity Name Here (Demo)</td>
+          <td>$250 (0.01 BTC)</td>
+          <td><a href="#" target="_blank">0x123...abcd</a></td>
+          <td class="status verified">✅ Verified</td>
+        </tr>
+        <tr>
+          <td>[Charity Name]</td>
+          <td>[Fill here]</td>
+          <td><a href="#" target="_blank">[Tx ID]</a></td>
+          <td class="status pending">⏳ Pending</td>
+        </tr>
+      </table>
     </section>
   </main>
 
-  <footer style="margin-top:40px;">
-    <div class="container small-muted">© 2025 StakeDaemon • Charity donations are updated regularly with blockchain proof.</div>
+  <footer>
+    © 2025 StakeDaemon • Charity donations are updated regularly with blockchain proof.
   </footer>
 
 </body>
