@@ -1,211 +1,104 @@
-/* style.css - StakeDaemon (Black background, white text only) */
-
-/* ===== Global ===== */
-:root {
-  --bg: #000000;
-  --fg: #ffffff;
-  --muted: #cfcfcf; /* for subtle secondary text if needed */
-  --radius: 12px;
-}
-
-* { box-sizing: border-box; }
-html,body {
-  height: 100%;
-}
 body {
+  background: #fffaf4;
+  font-family: "Fredoka", sans-serif;
+  color: #333;
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  background: var(--bg);
-  color: var(--fg);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 1.5;
+  padding: 0;
 }
 
-/* Links: white only */
-a { color: var(--fg); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-/* ===== Layout Utilities ===== */
-.container {
-  width: min(1100px, 92%);
-  margin: 0 auto;
-  padding: 30px 0;
-}
-
-/* Vertical spacing helpers */
-.spacer { height: 24px; }
-.spacer-sm { height: 12px; }
-.spacer-lg { height: 48px; }
-
-/* ===== Navbar ===== */
+/* Navbar */
 .navbar {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background: rgba(0,0,0,0.95);
-  border-bottom: 1px solid #111;
-  backdrop-filter: blur(4px);
-  padding: 12px 0;
+  background: #ffde7d;
+  border-bottom: 4px solid #333;
+  box-shadow: 0 4px 0 #333;
 }
-.navbar .nav-inner {
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 15px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(1100px, 92%);
-  margin: 0 auto;
 }
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  font-size: 1.4rem;
   font-weight: 700;
-  font-size: 1.25rem;
-  letter-spacing: 1px;
-  color: var(--fg);
-}
-.nav-links {
-  display: flex;
-  gap: 18px;
-  align-items: center;
 }
 .nav-links a {
-  font-weight: 500;
-  font-size: 0.95rem;
-  padding: 6px 8px;
-}
-
-/* Join button (white text only, transparent background) */
-.btn {
-  display: inline-block;
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--fg);
-  color: var(--fg);
-  background: transparent;
+  margin-left: 20px;
+  text-decoration: none;
   font-weight: 600;
-  cursor: pointer;
-  text-align: center;
+  color: #333;
+  transition: 0.2s;
 }
-.btn:hover {
-  background: rgba(255,255,255,0.06);
+.nav-links a:hover {
+  color: #ff5e5e;
+}
+.nav-links .btn {
+  background: #ff9b9b;
+  padding: 6px 14px;
+  border-radius: 8px;
+  color: #fff !important;
+  box-shadow: 3px 3px 0px #111;
 }
 
-/* ===== Hero / Headings ===== */
-.hero {
-  padding: 72px 0;
-  text-align: left;
-}
-.hero h1 {
-  font-size: 2.1rem;
-  margin-bottom: 12px;
+/* Headings doodle style */
+h2, h3 {
+  color: #222;
   font-weight: 700;
+  display: inline-block;
+  padding: 8px 16px;
+  background: #ffde7d;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 4px 4px 0px #333;
 }
-.hero p {
-  color: var(--muted);
-  max-width: 900px;
-  margin-bottom: 18px;
-}
-
-/* Headings */
-h2 {
-  font-size: 1.35rem;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-h3 {
-  font-size: 1.05rem;
-  margin-bottom: 8px;
-  font-weight: 600;
+h2::after, h3::after {
+  content: "✨";
+  margin-left: 10px;
 }
 
-/* ===== Cards ===== */
-.row {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-.card {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid #111;
-  border-radius: var(--radius);
-  padding: 18px;
-  flex: 1 1 280px;
-  min-width: 220px;
-}
-.card.lead {
-  flex: 2 1 520px;
-}
-
-/* ===== Forms & Inputs ===== */
-label {
-  display: block;
-  font-size: 0.92rem;
-  margin-bottom: 6px;
-  color: var(--fg);
-}
-input[type="text"],
-input[type="number"],
-select,
-textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #222;
-  background: #0b0b0b;
-  color: var(--fg);
-  outline: none;
-  font-size: 1rem;
-}
-input::placeholder, textarea::placeholder {
-  color: #9b9b9b;
-}
-
-/* Form submit in white style */
-.form-row { display: flex; gap: 12px; align-items: center; }
-.form-row .btn { flex-shrink: 0; }
-
-/* ===== Tables ===== */
-.table {
+/* Tables */
+.coin-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 12px;
-  color: var(--fg);
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 6px 6px 0px #222;
 }
-.table th, .table td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #111;
+.coin-table th, .coin-table td {
+  padding: 14px 18px;
   text-align: left;
-  font-size: 0.95rem;
 }
-.table th { font-weight: 600; }
+.coin-table th {
+  background: #ff9b9b;
+  color: #fff;
+}
+.coin-table tr:nth-child(even) {
+  background: #fff3f3;
+}
 
-/* ===== Lists / Features ===== */
-.features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-.feature {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid #111;
-  border-radius: 10px;
+/* Notes / Info box */
+.note {
+  margin-top: 25px;
+  font-size: 0.95rem;
+  color: #555;
+  background: #e4ffe7;
   padding: 14px;
+  border-radius: 12px;
+  border: 2px dashed #333;
+  box-shadow: 3px 3px 0px #111;
 }
 
-/* ===== Footer ===== */
+/* Footer */
 footer {
-  border-top: 1px solid #111;
-  padding: 28px 0;
+  margin-top: 50px;
+  padding: 20px;
   text-align: center;
-  color: #bdbdbd;
-  font-size: 0.95rem;
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 860px) {
-  .nav-links { display: none; } /* keep it simple; add a hamburger if needed */
-  .hero { text-align: center; }
-  .navbar .nav-inner { gap: 12px; }
-  .card.lead { min-width: 100%; }
+  background: #ffde7d;
+  font-weight: 600;
+  border-top: 4px solid #333;
+  box-shadow: 0 -4px 0 #333;
 }
