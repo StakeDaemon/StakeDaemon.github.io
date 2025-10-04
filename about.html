@@ -3,41 +3,65 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>StakeDaemon — About</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>StakeDaemon — Terms & Conditions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="apple-touch-icon" href="favicon.png" />
   <style>
-    .about-wrap {
+    body {
+      background: #fffaf4;
+      font-family: "Fredoka", sans-serif;
+      color: #333;
+    }
+
+    .terms-wrap {
       max-width: 1000px;
-      margin: 50px auto;
+      margin: 60px auto;
       padding: 20px;
-      line-height: 1.6;
+      line-height: 1.7;
     }
-    h2, h3 {
-      color: #fff;
+
+    h2 {
+      color: #222;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+      padding: 8px 16px;
+      background: #ffde7d;
+      border-radius: 12px;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      box-shadow: 4px 4px 0px #333;
     }
-    .coin-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
+
+    h2::after {
+      content: "⚡";
+      margin-left: 10px;
     }
-    .coin-table th, .coin-table td {
-      border: 1px solid #333;
-      padding: 12px 15px;
-      text-align: left;
+
+    .terms-wrap p, 
+    .terms-wrap li {
+      font-size: 1rem;
+      color: #444;
     }
-    .coin-table th {
-      background: #111;
-      color: #fff;
+
+    .terms-wrap ul {
+      margin: 10px 0 20px 20px;
+      padding-left: 20px;
     }
-    .coin-table tr:nth-child(even) {
-      background: rgba(255,255,255,0.02);
+
+    .terms-wrap li {
+      margin-bottom: 8px;
     }
-    .note {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #aaa;
+
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      text-align: center;
+      background: #ffde7d;
+      font-weight: 600;
+      border-top: 4px solid #333;
+      box-shadow: 0 -4px 0 #333;
     }
   </style>
 </head>
@@ -52,64 +76,82 @@
         <a href="calculator.html">Calculator</a>
         <a href="charity.html">Charity</a>
         <a href="about.html">About</a>
-        <a href="terms.html">Terms</a>
+        <a href="terms.html" class="active">Terms</a>
         <a href="privacy.html">Privacy</a>
         <a href="joinnow.html" class="btn">Join Now</a>
       </nav>
     </div>
   </header>
 
-  <main class="container">
-    <section class="about-wrap">
-      <h2>About StakeDaemon</h2>
-      <p>
-        StakeDaemon is a decentralized-inspired staking initiative built for transparency and accessibility. 
-        We offer multiple staking options for both <strong>Normal Coins</strong> and <strong>Stablecoins</strong>, 
-        each with unique APY rates. To ensure fairness and efficiency, minimum withdrawal thresholds are applied to every asset.
-      </p>
+  <!-- Terms Content -->
+  <main class="terms-wrap">
+    <h1 style="font-size:2rem; margin-bottom:20px;">📜 Terms & Conditions</h1>
+    <p>
+      By accessing and using StakeDaemon, you agree to the following terms. Please read carefully before participating in any staking plan.
+    </p>
 
-      <h3>🔹 Normal Coins — Minimum Withdrawal</h3>
-      <table class="coin-table">
-        <tr><th>Coin</th><th>Minimum Withdrawal</th></tr>
-        <tr><td>BTC</td><td>0.0015 BTC</td></tr> 
-        <tr><td>ETH</td><td>0.015 ETH</td></tr>
-        <tr><td>BNB</td><td>0.15 BNB</td></tr>
-        <tr><td>SOL</td><td>0.3 SOL</td></tr>
-        <tr><td>TRX</td><td>150 TRX</td></tr>
-        <tr><td>DOGE</td><td>200 DOGE</td></tr>
-        <tr><td>TON</td><td>15 TON</td></tr>
-        <tr><td>SHIBA</td><td>3,000,000 SHIBA</td></tr>
-        <tr><td>PEPE</td><td>3,000,000 PEPE</td></tr>
-        <tr><td>POLYGON</td><td>200 POL</td></tr>
-        <tr><td>BCH</td><td>0.05 BCH</td></tr>
-        <tr><td>LTC</td><td>0.3 LTC</td></tr>
-        <tr><td>AVAX</td><td>1.5 AVAX</td></tr>
-        <tr><td>XRP</td><td>25 XRP</td></tr>
-        <tr><td>XLM</td><td>125 XLM</td></tr>
-        <tr><td>ADA</td><td>50 ADA</td></tr>
-      </table>
+    <h2>1. Eligibility</h2>
+    <ul>
+      <li>You must be at least 18 years old or have legal capacity to participate.</li>
+      <li>By joining, you confirm that staking in your jurisdiction is legal.</li>
+    </ul>
 
-      <h3 style="margin-top:40px;">🔹 Stablecoins — Minimum Withdrawal</h3>
-      <table class="coin-table">
-        <tr><th>Coin</th><th>Minimum Withdrawal</th></tr>
-        <tr><td>USDT (ERC20)</td><td>35 USDT</td></tr>
-        <tr><td>USDT (BEP20)</td><td>35 USDT</td></tr>
-        <tr><td>USDT (TRC20)</td><td>35 USDT</td></tr>
-        <tr><td>DAI</td><td>35 DAI</td></tr>
-        <tr><td>USDC</td><td>35 USDC</td></tr>
-        <tr><td>Tether Gold (XAUT)</td><td>0.02 XAUT</td></tr>
-      </table>
+      <h2>2. Deposits & Withdrawals</h2>
+    <ul>
+      <li>Deposits must be made only to official wallet addresses provided in our Telegram bot or website.</li>
+      <li>Minimum withdrawals apply depending on the cryptocurrency (refer to <a href="about.html">withdrawal limits</a>).</li>
+      <li>Withdrawals are only processed after completion of the chosen staking plan duration.</li>
+      <li>Incorrect or unsupported transactions may result in permanent loss of funds.</li>
+    </ul>
 
-      <p class="note">
-        💡 Note: Withdrawals are processed faster once your staking plan is completed. 
-        We recommend withdrawing only after your plan expires to avoid delays.
-      </p>
-    </section>
+    <h2>3. Staking Plans</h2>
+    <ul>
+      <li>APY rates are fixed and displayed clearly in our plans.</li>
+      <li>Rewards are distributed only after the lock-in period ends.</li>
+      <li>Early withdrawals are not allowed unless otherwise stated.</li>
+    </ul>
+
+    <h2>4. Risks</h2>
+    <ul>
+      <li>Cryptocurrency investments are inherently risky and volatile.</li>
+      <li>StakeDaemon does not provide financial advice — users stake at their own risk.</li>
+      <li>We do not guarantee price stability of staked assets.</li>
+    </ul>
+
+    <h2>5. Privacy</h2>
+    <ul>
+      <li>We do not require KYC. Only your Telegram ID and wallet address are collected.</li>
+      <li>Personal data is never sold, rented, or shared with third parties.</li>
+    </ul>
+
+    <h2>6. Charity Donations</h2>
+    <ul>
+      <li>1–5% of StakeDaemon profits are donated to verified charities.</li>
+      <li>Transaction IDs are published in our <a href="charity.html">Charity Transparency</a> section.</li>
+    </ul>
+
+    <h2>7. Limitation of Liability</h2>
+    <ul>
+      <li>StakeDaemon is not liable for losses due to hacking, blockchain errors, or third-party failures.</li>
+      <li>Users are responsible for safeguarding their wallets and private keys.</li>
+    </ul>
+
+    <h2>8. Amendments</h2>
+    <p>
+      StakeDaemon reserves the right to update these terms at any time.  
+      Continued use of the platform means you accept the updated terms.
+    </p>
+
+    <h2>9. Contact</h2>
+    <p>
+      For questions, reach out to us at <strong>t.me/StakeDaemon</strong>.  
+      Our support team will be happy to assist you. 💬
+    </p>
   </main>
 
-  <footer style="margin-top:40px;">
-    <div class="container small-muted">© 2025 StakeDaemon • Transparent, community-driven staking.</div>
+  <footer>
+    © 2025 StakeDaemon • Fun, transparent, community-driven staking 🌍
   </footer>
 
 </body>
-</html>
+  </html>
