@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stablecoin Hustlr | Staking Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Archivo Black", sans-serif;
+  }
+  body {
+    background: linear-gradient(135deg, #0b0b0b, #1a1a1a);
+    color: #ffffff;
+    overflow-x: hidden;
+  }
+
+  /* --- Wormhole Animation --- */
+  .wormhole-enter {
+    animation: wormholeEntry 1.8s ease-in-out;
+  }
+  @keyframes wormholeEntry {
+    0% { transform: scale(0) rotate(0deg); filter: blur(15px); opacity: 0; }
+    50% { transform: scale(1.3) rotate(360deg); filter: blur(4px); opacity: 1; }
+    100% { transform: scale(1) rotate(720deg); filter: blur(0px); opacity: 1; }
+  }
+
+  /* --- Exit Button --- */
+  .exit-btn {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 1000;
+  }
+  .exit-btn:hover {
+    transform: scale(1.08);
+    background: #ccc;
+  }
+
+  /* --- Container --- */
+  .container {
+    text-align: center;
+    max-width: 900px;
+    margin: 100px auto;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #00ff9f;
+  }
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    color: #d3d3d3;
+  }
+
+  /* --- Coin Grid --- */
+  .coin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 50px;
+  }
+  .coin {
+    border: 2px solid #00ff9f;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 18px;
+    background: rgba(0, 255, 159, 0.08);
+    transition: all 0.3s ease;
+  }
+  .coin:hover {
+    background: #00ff9f;
+    color: #000;
+    transform: scale(1.05);
+  }
+
+  /* --- Calculator --- */
+  .calculator {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #00ff9f;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0px 0px 25px rgba(0,255,159,0.2);
+  }
+  .calculator h2 {
+    margin-bottom: 20px;
+    color: #00ff9f;
+  }
+  .calc-input, select {
+    padding: 10px 15px;
+    border: 2px solid #00ff9f;
+    border-radius: 10px;
+    font-size: 15px;
+    margin: 8px;
+    width: 180px;
+    background: transparent;
+    color: #fff;
+  }
+  .calc-input::placeholder {
+    color: #999;
+  }
+  .calc-btn {
+    background: #00ff9f;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .calc-btn:hover {
+    background: #00e68a;
+    transform: scale(1.05);
+  }
+
+  /* --- Result Table --- */
+  .reward-table {
+    margin-top: 25px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .reward-table th, .reward-table td {
+    border: 2px solid #00ff9f;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+  }
+
+</style>
+</head>
+<body class="wormhole-enter">
+
+  <button class="exit-btn" onclick="exitToHome()">Exit</button>
+
+  <div class="container">
+    <h1>💵 Stablecoin Hustlr</h1>
+    <p>
+      Welcome to the zone of peace and profits.<br>
+      Your stablecoins work hard while you chill — stake, relax, and calculate your growth below.
+    </p>
+
+    <div class="coin-grid">
+      <div class="coin">USDT (TRC)</div><div class="coin">USDC</div><div class="coin">DAI</div>
+      <div class="coin">USDT (BSC)</div><div class="coin">USDe</div><div class="coin">USDT (ETH)</div><div class="coin">PYUSD</div>
+    </div>
+
+    <div class="calculator">
+      <h2>📈 Stable Staking Reward Calculator</h2>
+      <input type="number" id="amount" class="calc-input" placeholder="Enter amount">
+      <select id="duration">
+        <option value="15" data-days="7">Weekly — 15% APY</option>
+        <option value="25" data-days="30">Monthly — 25% APY</option>
+        <option value="50" data-days="90">Quarterly — 50% APY</option>
+        <option value="75" data-days="180">Half-Yearly — 75% APY</option>
+        <option value="100" data-days="365">Annually — 100% APY</option>
+      </select>
+      <button class="calc-btn" onclick="calculateRewards()">Show Rewards</button>
+
+      <table class="reward-table" id="resultTable" style="display:none;">
+        <tr><th>Period</th><th>APY</th><th>Reward</th><th>Total</th></tr>
+        <tr><td id="dur"></td><td id="apy"></td><td id="ret"></td><td id="total"></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function calculateRewards() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const select = document.getElementById('duration');
+      const apy = parseFloat(select.value); // Annual rate
+      const days = parseInt(select.options[select.selectedIndex].dataset.days);
+      const periodText = select.options[select.selectedIndex].text.split('—')[0].trim();
+
+      if (!amount || amount <= 0) return alert('Please enter a valid amount');
+
+      // --- Correct APY math (prorated by days) ---
+      const reward = amount * (apy / 100) * (days / 365);
+      const total = amount + reward;
+
+      const fmt = n => Number(n.toFixed(4)).toLocaleString();
+
+      document.getElementById('dur').innerText = periodText;
+      document.getElementById('apy').innerText = apy + '%';
+      document.getElementById('ret').innerText = fmt(reward) + ' USD';
+      document.getElementById('total').innerText = fmt(total) + ' USD';
+      document.getElementById('resultTable').style.display = 'table';
+    }
+
+    function exitToHome() {
+      document.body.classList.remove('wormhole-enter');
+      document.body.style.animation = 'wormholeExit 1.6s ease-in-out';
+      setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+    }
+
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes wormholeExit {
+        0% { transform: scale(1) rotate(0deg); filter: blur(0px); opacity: 1; }
+        50% { transform: scale(1.3) rotate(360deg); filter: blur(6px); opacity: 0.6; }
+        100% { transform: scale(0) rotate(720deg); filter: blur(15px); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+</body>
+</html>
