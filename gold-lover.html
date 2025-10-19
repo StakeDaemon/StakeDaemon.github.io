@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gold Lover | StakeDaemon</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Archivo Black",sans-serif;}
+  body{
+    background: radial-gradient(circle at center,#1a1a1a 0%,#000000 100%);
+    color:#ffd700;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wormhole-enter{animation:wormholeEntry 1.2s ease-in-out;}
+  @keyframes wormholeEntry{
+    0%{transform:scale(0) rotate(0deg);filter:blur(15px);opacity:0}
+    60%{transform:scale(1.15) rotate(360deg);filter:blur(4px);opacity:1}
+    100%{transform:scale(1) rotate(720deg);filter:blur(0);opacity:1}
+  }
+
+  .container{max-width:900px;margin:80px auto;padding:20px;text-align:center;}
+  h1{
+    font-size:3rem;
+    margin-bottom:12px;
+    background:linear-gradient(90deg,#ffd700,#fff5b7,#ffd700);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  p{color:#f6e27f;margin-bottom:28px;font-size:1.05rem}
+
+  .coin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:40px}
+  .coin{
+    border:2px solid #ffd700;border-radius:12px;padding:18px;
+    background:linear-gradient(135deg,rgba(255,215,0,0.07),rgba(255,255,255,0.02));
+    color:#fff;font-size:18px;transition:all .18s ease;
+  }
+  .coin:hover{background:linear-gradient(135deg,#ffd700,#ffb700);color:#000;transform:scale(1.06)}
+
+  .calculator{
+    background:rgba(255,215,0,0.06);border:2px solid #ffd700;border-radius:14px;padding:26px;
+    box-shadow:0 8px 30px rgba(255,215,0,0.08);
+    max-width:680px;margin:0 auto;
+  }
+  .calculator h2{color:#ffd700;margin-bottom:14px}
+  .calc-input, select{
+    padding:10px 14px;border-radius:10px;border:2px solid #ffd700;background:transparent;color:#fff;
+    margin:8px;font-size:15px;width:calc(50% - 20px);
+  }
+  .calc-input::placeholder{color:#e8d98a}
+  .calc-btn{
+    display:inline-block;margin-top:10px;padding:10px 20px;border-radius:10px;border:none;
+    background:linear-gradient(135deg,#ffd700,#ffb700);color:#000;font-weight:700;cursor:pointer;
+  }
+  .calc-btn:hover{filter:brightness(1.05);transform:translateY(-2px)}
+
+  .reward-table{margin-top:18px;width:100%;border-collapse:collapse}
+  .reward-table th,.reward-table td{border:2px solid #ffd700;padding:10px;text-align:center;color:#fff8c0}
+
+  .exit-btn{
+    position:fixed;top:18px;right:18px;padding:10px 16px;border-radius:10px;border:none;
+    background:linear-gradient(135deg,#ffd700,#ffb700);color:#000;cursor:pointer;z-index:2000;
+  }
+
+  @media (max-width:720px){
+    .calc-input, select{width:100%}
+    h1{font-size:2rem}
+  }
+</style>
+</head>
+<body class="wormhole-enter">
+
+  <button class="exit-btn" onclick="exitToHome()">Exit</button>
+
+  <div class="container">
+    <h1>🏆 Gold Lover</h1>
+    <p>Gold-backed staking for XAUT &amp; PAXG — APY shown is annual. Calculator prorates the APY for the selected period.</p>
+
+    <div class="coin-grid">
+      <div class="coin">XAUT</div>
+      <div class="coin">PAXG</div>
+    </div>
+
+    <div class="calculator" role="region" aria-label="Gold staking calculator">
+      <h2>💰 Gold-Backed Staking Calculator</h2>
+
+      <!-- Use option values as ANNUAL APY in percent (e.g. 23 = 23% APY) -->
+      <input id="amount" class="calc-input" type="number" min="0" step="any" placeholder="Enter amount (e.g. 1.5)" />
+      <select id="duration" class="calc-input" aria-label="Duration">
+        <option value="17" data-days="7">Weekly — 17% APY (prorated 7 days)</option>
+        <option value="18" data-days="30">Monthly — 18% APY (prorated 30 days)</option>
+        <option value="19" data-days="90">Quarterly — 19% APY (prorated 90 days)</option>
+        <option value="20" data-days="180">Half-Yearly — 20% APY (prorated 180 days)</option>
+        <option value="23" data-days="365">Annual — 23% APY (365 days)</option>
+      </select>
+
+      <div style="margin-top:12px;">
+        <button class="calc-btn" onclick="calculateRewards()">Show Rewards</button>
+      </div>
+
+      <table id="resultTable" class="reward-table" style="display:none">
+        <thead>
+          <tr><th>Period</th><th>APY (annual)</th><th>Reward</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="r_period"></td>
+            <td id="r_apy"></td>
+            <td id="r_reward"></td>
+            <td id="r_total"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<script>
+  // Core logic: treat selected value as ANNUAL APY in percent.
+  // Reward for chosen period = principal * (APY/100) * (days / 365)
+  // Total = principal + reward
+  function calculateRewards(){
+    const amountEl = document.getElementById('amount');
+    const durEl = document.getElementById('duration');
+    const amt = parseFloat(amountEl.value);
+    const apy = parseFloat(durEl.value); // e.g. 23 (means 23% per year)
+    const days = parseInt(durEl.options[durEl.selectedIndex].getAttribute('data-days'), 10) || 365;
+
+    if (!amt || amt <= 0){
+      alert('Please enter a valid amount');
+      return;
+    }
+    if (!apy || apy <= 0){
+      alert('Invalid APY selected');
+      return;
+    }
+
+    // Pro-rated reward (since APY is annual)
+    const reward = amt * (apy / 100) * (days / 365);
+    const total = amt + reward;
+
+    // Format numbers for display: show up to 8 decimals for precision, trim trailing zeros
+    function fmt(n){
+      if (Math.abs(n) >= 1) return Number(n.toFixed(6)).toLocaleString();
+      return Number(n.toFixed(8));
+    }
+
+    document.getElementById('r_period').innerText = durEl.options[durEl.selectedIndex].text.split('—')[0].trim();
+    document.getElementById('r_apy').innerText = apy + '%';
+    document.getElementById('r_reward').innerText = fmt(reward) + ' tokens';
+    document.getElementById('r_total').innerText = fmt(total) + ' tokens';
+    document.getElementById('resultTable').style.display = 'table';
+  }
+
+  function exitToHome(){
+    // wormhole exit animation
+    document.body.style.animation = 'wormholeExit 1.0s ease-in-out forwards';
+    setTimeout(()=>{ window.location.href = 'index.html'; }, 900);
+  }
+
+  // inject exit animation keyframes
+  (function(){
+    const s = document.createElement('style');
+    s.innerHTML = `@keyframes wormholeExit{
+      0%{transform:scale(1) rotate(0deg); filter:blur(0); opacity:1}
+      50%{transform:scale(1.2) rotate(360deg); filter:blur(6px); opacity:0.7}
+      100%{transform:scale(0) rotate(720deg); filter:blur(15px); opacity:0}
+    }`;
+    document.head.appendChild(s);
+  })();
+</script>
+</body>
+</html>
