@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bitcoin Maxi — StakeDaemon</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Page visual */
+    body {
+      background: #ff9900;
+      color: black;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin: 0;
+      padding: 30px 12px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* Wormhole in/out */
+    .wormhole-enter {
+      animation: wormholeIn 600ms ease forwards;
+    }
+    .wormhole-exit {
+      animation: wormholeOut 700ms ease forwards;
+    }
+    @keyframes wormholeIn {
+      0% { transform: scale(0); opacity: 0; border-radius: 50%; filter: blur(12px); }
+      60% { transform: scale(1.05); opacity: 1; filter: blur(2px); }
+      100% { transform: scale(1); opacity: 1; border-radius: 0; filter: blur(0); }
+    }
+    @keyframes wormholeOut {
+      0% { transform: scale(1); opacity: 1; filter: blur(0); }
+      60% { transform: scale(1.2) rotate(180deg); filter: blur(4px); opacity: 0.7; }
+      100% { transform: scale(0); opacity: 0; filter: blur(12px); }
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+      margin: 6px 0 8px;
+    }
+    p.lead {
+      max-width: 760px;
+      margin: 0 0 18px;
+      font-size: 1rem;
+      color: rgba(0,0,0,0.85);
+    }
+
+    .fact-card {
+      background: rgba(255,255,255,0.85);
+      color: black;
+      border-radius: 12px;
+      padding: 18px;
+      margin: 18px auto;
+      max-width: 720px;
+      box-shadow: 3px 3px 0px rgba(0,0,0,0.6);
+      border: 2px solid rgba(0,0,0,0.12);
+    }
+
+    .calculator {
+      margin-top: 24px;
+      background: white;
+      color: black;
+      padding: 22px;
+      border-radius: 12px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+      border: 2px solid rgba(0,0,0,0.12);
+    }
+
+    label {
+      display:block;
+      font-weight:700;
+      margin: 10px 0 6px;
+      color: #111;
+    }
+
+    input[type="number"], select {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      border: 2px solid #000;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      font-weight:700;
+    }
+
+    button {
+      background: black;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .12s ease, background .12s;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+    button:hover { transform: translateY(-3px); background: #111; }
+
+    table.result {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+    table.result th, table.result td {
+      padding: 10px;
+      border: 2px solid #000;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+    table.result th { background: rgba(0,0,0,0.06); font-weight:800; }
+
+    .exit-btn {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      background: black;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      z-index: 9999;
+      box-shadow: 3px 3px 0 rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.04);
+    }
+    .exit-btn:hover { background:#222; transform: translateY(-2px); }
+
+    .note {
+      margin-top: 10px;
+      color: rgba(0,0,0,0.75);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width:720px){
+      h1 { font-size: 1.6rem; }
+      .calculator { padding: 16px; }
+    }
+  </style>
+</head>
+<body class="wormhole-enter">
+  <div class="container">
+    <h1>🟠 Bitcoin Maxi</h1>
+    <p class="lead">
+      You live and breathe orange. You trust Bitcoin — the original, the unstoppable.  
+      Calculate estimated rewards for each plan below. (Calculations use pro-rata interest based on each plan's APY & duration.)
+    </p>
+
+    <div class="fact-card" role="region" aria-label="fact">
+      <h3 style="margin:0 0 8px;">⚡ Quick Fact</h3>
+      <p style="margin:0;">Over 90% of Bitcoin supply has already been mined — scarcity is part of the narrative.</p>
+    </div>
+
+    <div class="calculator" role="region" aria-label="calculator">
+      <h3 style="margin:0 0 10px;">📈 Staking Calculator</h3>
+
+      <label for="amount">Enter amount (BTC)</label>
+      <input id="amount" type="number" placeholder="e.g., 0.05" min="0.00000001" step="0.00000001" />
+
+      <label for="plan">Choose plan (each plan has its APY)</label>
+      <select id="plan">
+        <option value="weekly">Weekly — 17% APY (7 days)</option>
+        <option value="monthly">Monthly — 18% APY (30 days)</option>
+        <option value="quarterly">Quarterly — 19% APY (90 days)</option>
+        <option value="semiannual">Semi-Annual — 20% APY (180 days)</option>
+        <option value="annual">Annual — 22% APY (365 days)</option>
+      </select>
+
+      <button onclick="calculate()">Show Rewards</button>
+
+      <div id="resultArea" aria-live="polite"></div>
+
+      <p class="note">Note: This is an estimated reward calculator. Network fees and rounding are excluded. Rewards are calculated as: <em>principal × (APY / 100) × (days / 365)</em>.</p>
+    </div>
+  </div>
+
+  <button class="exit-btn" onclick="exitPage()">Exit ✖</button>
+
+  <script>
+    // Plan definitions
+    const plans = {
+      weekly:      { apy: 17, days: 7,   label: 'Weekly (7 days)' },
+      monthly:     { apy: 18, days: 30,  label: 'Monthly (30 days)' },
+      quarterly:   { apy: 19, days: 90,  label: 'Quarterly (90 days)' },
+      semiannual:  { apy: 20, days: 180, label: 'Semi-Annual (180 days)' },
+      annual:      { apy: 22, days: 365, label: 'Annual (365 days)' }
+    };
+
+    // format BTC numbers neatly (up to 8 decimals, trim trailing zeros)
+    function formatBTC(n) {
+      // handle very small numbers
+      const v = Number(n);
+      if (!isFinite(v) || isNaN(v)) return '0';
+      return v.toFixed(8).replace(/\.?0+$/, '');
+    }
+
+    function calculate() {
+      const amtEl = document.getElementById('amount');
+      const planEl = document.getElementById('plan');
+      const resultArea = document.getElementById('resultArea');
+
+      const amount = parseFloat(amtEl.value);
+      const planKey = planEl.value;
+
+      if (!amount || amount <= 0) {
+        resultArea.innerHTML = '<p style="color:#900;font-weight:700;">Please enter a valid BTC amount.</p>';
+        return;
+      }
+      if (!plans[planKey]) {
+        resultArea.innerHTML = '<p style="color:#900;font-weight:700;">Please choose a plan.</p>';
+        return;
+      }
+
+      // compute for all plans (show table of all durations & rewards)
+      const rows = [];
+      for (const key of ['weekly','monthly','quarterly','semiannual','annual']) {
+        const p = plans[key];
+        const reward = amount * (p.apy / 100) * (p.days / 365); // simple pro-rata
+        const total = amount + reward;
+        rows.push({
+          label: p.label,
+          apy: p.apy,
+          days: p.days,
+          reward: reward,
+          total: total
+        });
+      }
+
+      // Build result table — highlight selected plan row
+      let html = '<table class="result" aria-label="rewards table"><thead><tr><th>Plan</th><th>APY</th><th>Duration (days)</th><th>Reward (BTC)</th><th>Total (BTC)</th></tr></thead><tbody>';
+      for (const r of rows) {
+        const highlight = (r.label.toLowerCase().startsWith(plans[planKey].label.split(' ')[0].toLowerCase())) ? ' style="background: rgba(0,0,0,0.06); font-weight:700;"' : '';
+        html += `<tr${highlight}><td>${r.label}</td><td>${r.apy}%</td><td>${r.days}</td><td>${formatBTC(r.reward)}</td><td>${formatBTC(r.total)}</td></tr>`;
+      }
+      html += '</tbody></table>';
+
+      // Add a short summary for the selected plan
+      const sel = plans[planKey];
+      const selReward = amount * (sel.apy / 100) * (sel.days / 365);
+      const selTotal = amount + selReward;
+
+      html += `<div style="margin-top:12px; font-weight:700;">Selected: ${sel.label} — Reward: ${formatBTC(selReward)} BTC — Total: ${formatBTC(selTotal)} BTC</div>`;
+
+      resultArea.innerHTML = html;
+    }
+
+    // Exit with wormhole animation then redirect
+    function exitPage() {
+      document.body.classList.remove('wormhole-enter');
+      document.body.classList.add('wormhole-exit');
+      // allow animation to play
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 700);
+    }
+  </script>
+</body>
+</html>
