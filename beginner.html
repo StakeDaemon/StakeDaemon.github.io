@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beginner Zone | Staking Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  * {margin: 0; padding: 0; box-sizing: border-box; font-family: "Archivo Black", sans-serif;}
+  body {background-color: #ffffff; color: #000000; overflow-x: hidden; transition: background 1s ease;}
+
+  .wormhole-enter {animation: wormholeEntry 1.8s ease-in-out;}
+  @keyframes wormholeEntry {
+    0% {transform: scale(0) rotate(0deg); filter: blur(15px); opacity: 0;}
+    50% {transform: scale(1.3) rotate(360deg); filter: blur(4px); opacity: 1;}
+    100% {transform: scale(1) rotate(720deg); filter: blur(0px); opacity: 1;}
+  }
+
+  .exit-btn {
+    position: fixed; top: 25px; right: 25px;
+    background: #000; color: #fff; border: none;
+    padding: 12px 25px; border-radius: 14px; font-size: 16px;
+    cursor: pointer; transition: 0.3s; z-index: 1000;
+  }
+  .exit-btn:hover {transform: scale(1.08); background: #444;}
+
+  .container {text-align: center; max-width: 900px; margin: 100px auto; padding: 20px;}
+  h1 {font-size: 3rem; margin-bottom: 15px;}
+  p {font-size: 1.1rem; line-height: 1.6; margin-bottom: 40px;}
+
+  .coin-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px; margin-bottom: 50px;
+  }
+  .coin {
+    border: 2px solid #000; border-radius: 12px; padding: 15px; font-size: 18px;
+    background: #f6f6f6; transition: all 0.3s ease;
+  }
+  .coin:hover {background: #000; color: #fff; transform: scale(1.05);}
+
+  .calculator {
+    background: #f0f0f0; border-radius: 20px; padding: 30px; text-align: center;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+  }
+  .calculator h2 {margin-bottom: 20px;}
+  .calc-input, select {
+    padding: 10px 15px; border: 2px solid #000; border-radius: 10px;
+    font-size: 15px; margin: 8px; width: 180px;
+  }
+  .calc-btn {
+    background: #000; color: #fff; border: none; padding: 10px 20px;
+    border-radius: 10px; font-size: 15px; cursor: pointer; transition: 0.3s;
+  }
+  .calc-btn:hover {background: #333; transform: scale(1.05);}
+
+  .reward-table {
+    margin-top: 25px; width: 100%; border-collapse: collapse;
+  }
+  .reward-table th, .reward-table td {
+    border: 2px solid #000; padding: 10px; text-align: center; font-size: 16px;
+  }
+</style>
+</head>
+<body class="wormhole-enter">
+
+  <button class="exit-btn" onclick="exitToHome()">Exit ✖</button>
+
+  <div class="container">
+    <h1>👋 Welcome, Beginner!</h1>
+    <p>You’re at the perfect place to start your crypto journey.<br>
+    Explore top-performing coins, understand staking, and calculate your earnings instantly.</p>
+
+    <div class="coin-grid">
+      <div class="coin">ETH</div><div class="coin">SOL</div><div class="coin">TRX</div><div class="coin">BNB</div>
+      <div class="coin">POL</div><div class="coin">TWT</div><div class="coin">UNI</div><div class="coin">HYPE</div>
+      <div class="coin">OP</div><div class="coin">PI</div><div class="coin">ARB</div><div class="coin">XMR</div>
+      <div class="coin">TON</div><div class="coin">BCH</div><div class="coin">LTC</div><div class="coin">SUI</div>
+      <div class="coin">CAKE</div><div class="coin">JUP</div><div class="coin">AVAX</div><div class="coin">ATOM</div>
+      <div class="coin">XRP</div><div class="coin">XLM</div><div class="coin">ADA</div><div class="coin">DOT</div>
+      <div class="coin">ZEC</div><div class="coin">APT</div><div class="coin">DASH</div><div class="coin">DGB</div>
+    </div>
+
+    <div class="calculator">
+      <h2>💰 Beginner Staking Reward Calculator</h2>
+      <input type="number" id="amount" class="calc-input" placeholder="Enter amount">
+      <select id="duration">
+        <option value="15">Weekly (15% APY)</option>
+        <option value="16">Monthly (16% APY)</option>
+        <option value="18">Quarterly (18% APY)</option>
+        <option value="19">Half-Yearly (19% APY)</option>
+        <option value="20">Annually (20% APY)</option>
+      </select>
+      <button class="calc-btn" onclick="calculateRewards()">Show Rewards</button>
+
+      <table class="reward-table" id="resultTable" style="display:none;">
+        <tr><th>Duration</th><th>Expected Reward</th><th>Total Value</th></tr>
+        <tr><td id="dur"></td><td id="reward"></td><td id="total"></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function calculateRewards() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const select = document.getElementById('duration');
+      const apy = parseFloat(select.value);
+      const durText = select.options[select.selectedIndex].text;
+      let t;
+
+      // Define duration in years
+      switch (durText) {
+        case "Weekly (15% APY)": t = 1/52; break;
+        case "Monthly (16% APY)": t = 1/12; break;
+        case "Quarterly (18% APY)": t = 0.25; break;
+        case "Half-Yearly (19% APY)": t = 0.5; break;
+        case "Annually (20% APY)": t = 1; break;
+        default: t = 1;
+      }
+
+      if (!amount || amount <= 0) return alert("Please enter a valid amount");
+
+      // Compounded monthly (12 times a year)
+      const n = 12;
+      const total = amount * Math.pow((1 + apy/100 / n), n * t);
+      const reward = total - amount;
+
+      document.getElementById('dur').innerText = durText;
+      document.getElementById('reward').innerText = reward.toFixed(4) + " Coins";
+      document.getElementById('total').innerText = total.toFixed(4) + " Coins";
+      document.getElementById('resultTable').style.display = 'table';
+    }
+
+    function exitToHome() {
+      document.body.classList.remove('wormhole-enter');
+      document.body.style.animation = 'wormholeExit 1.6s ease-in-out';
+      setTimeout(() => { window.location.href = 'index.html'; }, 1500);
+    }
+
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes wormholeExit {
+        0% { transform: scale(1) rotate(0deg); filter: blur(0px); opacity: 1; }
+        50% { transform: scale(1.3) rotate(360deg); filter: blur(6px); opacity: 0.6; }
+        100% { transform: scale(0) rotate(720deg); filter: blur(15px); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+</body>
+          </html>
