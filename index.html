@@ -3,271 +3,267 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StakeDaemon | Honest Staking Platform</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <title>Who Are You? | StakeDaemon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
   <style>
-    body {
-      background: #fffbe6;
-      color: #111;
-      font-family: 'Inter', sans-serif;
+    * {
       margin: 0;
       padding: 0;
-      line-height: 1.6;
+      box-sizing: border-box;
+      font-family: 'Archivo Black', sans-serif;
     }
 
-    h1, h2 {
-      font-family: 'Patrick Hand', cursive;
-      text-shadow: 2px 2px 0 #fff, 4px 4px 0 #111;
-    }
-
-    /* Navbar */
-    .navbar {
-      background: #ffe26d;
-      border-bottom: 3px solid #111;
-      padding: 15px 30px;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 3px 0 #111;
-    }
-    .nav-inner {
+    body {
+      background: #000;
+      color: #fff;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-    }
-    .logo {
-      font-size: 1.6rem;
-      font-weight: 700;
-    }
-    .nav-links a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: #111;
-      font-weight: 600;
-      padding: 6px 10px;
-      border: 2px solid transparent;
-      border-radius: 8px;
-      transition: 0.2s;
-    }
-    .nav-links a:hover {
-      border: 2px solid #111;
-      background: #fff59d;
-    }
-    .nav-links .btn {
-      background: #ff90b3;
-      border: 3px solid #111;
-      padding: 8px 14px;
-      border-radius: 12px;
-      font-weight: 700;
-      box-shadow: 3px 3px 0 #111;
-      transition: transform 0.2s;
-    }
-    .nav-links .btn:hover {
-      transform: scale(1.1);
-    }
-
-    /* Hero */
-    .hero {
-      text-align: center;
-      padding: 80px 20px;
-      background: #c0f7ff;
-      border-bottom: 3px solid #111;
+      flex-direction: column;
       position: relative;
     }
-    .hero h1 {
+
+    h1 {
       font-size: 3rem;
-      margin-bottom: 20px;
-    }
-    .hero p {
-      max-width: 600px;
-      margin: auto;
-      font-size: 1.1rem;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+      text-align: center;
     }
 
-    /* Doodles */
-    .doodle {
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 2;
+    }
+
+    .option-btn {
+      padding: 15px 40px;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      transition: all 0.4s ease;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .option-btn:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+    .bitcoin { background: #f7931a; }
+    .beginner { background: #777; }
+    .meme { background: #3ed94f; }
+    .stable { background: #00aaff; }
+    .gold { background: #f4c430; }
+
+    /* Wormhole animation */
+    .wormhole {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(0,0,0,1) 80%);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      animation: wormholeExpand 1.3s ease forwards;
+      z-index: 999;
+    }
+
+    @keyframes wormholeExpand {
+      to {
+        width: 400vw;
+        height: 400vw;
+        opacity: 0;
+      }
+    }
+
+    /* Particles */
+    .particle {
       position: absolute;
-      font-size: 2rem;
-      opacity: 0.4;
-      pointer-events: none;
-    }
-    .d1 { top: 10px; left: 20px; }
-    .d2 { bottom: 20px; right: 30px; transform: rotate(20deg); }
-    .d3 { top: 50%; left: 10px; transform: rotate(-20deg); }
-
-    /* Sections */
-    .container {
-      max-width: 1000px;
-      margin: 50px auto;
-      padding: 20px;
-    }
-    h2 {
-      display: inline-block;
-      padding: 6px 14px;
-      background: #ffe26d;
-      border: 3px solid #111;
-      border-radius: 8px;
-      box-shadow: 3px 3px 0 #111;
-      margin-bottom: 20px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      animation: float 10s infinite ease-in-out;
     }
 
-    /* Cards */
-    .row {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .card {
-      flex: 1;
-      min-width: 280px;
-      background: #fff;
-      border: 3px solid #111;
-      border-radius: 14px;
-      padding: 20px;
-      transition: 0.25s;
-      box-shadow: 4px 4px 0 #111;
-    }
-    .card:hover {
-      transform: translateY(-6px) rotate(-2deg);
-      background: #fdf2f8;
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 0.3; }
+      50% { transform: translateY(-100px) scale(1.2); opacity: 0.8; }
+      100% { transform: translateY(0) scale(1); opacity: 0.3; }
     }
 
-    /* Table */
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-    }
-    .table th, .table td {
-      border: 2px solid #111;
-      padding: 10px;
-      text-align: center;
-    }
-    .table th {
-      background: #ff90b3;
-    }
-
-    /* Features */
-    .features {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .feature {
-      flex: 1;
-      min-width: 250px;
-      padding: 15px;
-      border: 3px dashed #111;
-      border-radius: 12px;
-      background: #fffde7;
-      box-shadow: 4px 4px 0 #111;
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-block;
-      margin-top: 15px;
-      background: #90ee90;
-      color: #111;
-      padding: 12px 20px;
-      border-radius: 12px;
-      font-weight: 700;
-      text-decoration: none;
-      border: 3px solid #111;
-      box-shadow: 4px 4px 0 #111;
-      transition: transform 0.2s, background 0.2s;
-    }
-    .btn:hover {
-      background: #7fffd4;
-      transform: scale(1.05) rotate(-1deg);
-    }
-
-    /* Footer */
-    footer {
-      background: #ffe26d;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-      border-top: 3px solid #111;
+    /* Terms Modal */
+    .terms-btn {
+      position: absolute;
+      bottom: 25px;
       font-size: 0.9rem;
-      color: #111;
-      box-shadow: inset 0 3px 0 #111;
+      text-decoration: underline;
+      color: #ccc;
+      cursor: pointer;
+      z-index: 3;
     }
-    footer a {
-      color: #111;
-      font-weight: 600;
-      margin: 0 6px;
+
+    .terms-modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .terms-content {
+      background: rgba(25,25,25,0.9);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 25px;
+      width: 95%;
+      max-width: 800px;
+      height: 90vh;
+      overflow-y: auto;
+      color: #ddd;
+      text-align: left;
+      box-shadow: 0 0 25px rgba(0,255,255,0.2);
+      backdrop-filter: blur(12px);
+      scrollbar-width: thin;
+      scrollbar-color: #0af #111;
+    }
+
+    .terms-content h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0af;
+    }
+
+    .terms-content h3 {
+      margin-top: 25px;
+      color: #fff;
+    }
+
+    .terms-content p, .terms-content li {
+      margin: 10px 0;
+      line-height: 1.6;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .close-btn {
+      margin-top: 25px;
+      display: block;
+      text-align: center;
+      color: #0af;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .close-btn:hover {
+      text-decoration: underline;
     }
   </style>
+  <script>
+    function enterCategory(category) {
+      const wormhole = document.createElement('div');
+      wormhole.classList.add('wormhole');
+      document.body.appendChild(wormhole);
+      setTimeout(() => {
+        window.location.href = category + ".html";
+      }, 1300);
+    }
+
+    // Particles + button animation
+    window.onload = () => {
+      const buttons = document.querySelectorAll('.option-btn');
+      buttons.forEach((btn, i) => {
+        setTimeout(() => {
+          btn.style.transition = 'all 0.6s ease';
+          btn.style.opacity = '1';
+          btn.style.transform = 'translateY(0)';
+        }, 2000 + i * 200);
+      });
+      for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        p.style.width = p.style.height = Math.random() * 5 + 2 + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        document.body.appendChild(p);
+      }
+    };
+
+    function openTerms() {
+      document.querySelector('.terms-modal').style.display = 'flex';
+    }
+    function closeTerms() {
+      document.querySelector('.terms-modal').style.display = 'none';
+    }
+  </script>
 </head>
 <body>
+  <div class="container">
+    <h1>WHO ARE YOU?</h1>
 
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="nav-inner">
-      <div class="logo">🐉 StakeDaemon</div>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
- <a href="calculator.html">Calculator</a>
- <a href="charity.html">Charity</a>
- <a href="about.html">About</a>
- <a href="terms.html" class="active">Terms</a>
- <a href="privacy.html">Privacy</a>
- <a href="joinnow.html" class="btn">Join Now</a>
-      </nav>
+    <div class="buttons">
+      <button class="option-btn bitcoin" onclick="enterCategory('bitcoin-maxi')">🟠 A Bitcoin Maxi</button>
+      <button class="option-btn beginner" onclick="enterCategory('beginner')">⚪ Beginner</button>
+      <button class="option-btn meme" onclick="enterCategory('meme-lover')">🟢 Meme Lover</button>
+      <button class="option-btn stable" onclick="enterCategory('stable-hustlr')">🔵 Stablecoin Hustlr</button>
+      <button class="option-btn gold" onclick="enterCategory('gold-lover')">🟡 Gold Lover</button>
     </div>
-  </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="doodle d1">⭐</div>
-    <div class="doodle d2">💸</div>
-    <div class="doodle d3">🔥</div>
-    <h1>Stake Smarter with StakeDaemon</h1>
-    <p>Transparent, community-driven staking for <b>stablecoins</b> & <b>cryptocurrencies</b>. Earn APY with honesty, security & charity impact.</p>
-    <a href="joinnow.html" class="btn">🚀 Join Our Telegram</a>
-  </section>
+    <div class="terms-btn" onclick="openTerms()">Terms & Conditions</div>
 
-  <!-- Plans -->
-  <section class="container">
-    <h2>📊 Staking Plans</h2>
-    <div class="row">
-      <div class="card">
-        <h3>Normal Coins</h3>
-        <table class="table">
-          <tr><th>Duration</th><th>APY</th></tr>
-          <tr><td>Weekly</td><td>12%</td></tr>
-          <tr><td>Monthly</td><td>13%</td></tr>
-          <tr><td>Quarterly</td><td>14%</td></tr>
-          <tr><td>Semi-Annual</td><td>15%</td></tr>
-          <tr><td>Annual</td><td>17%</td></tr>
-        </table>
-      </div>
-      <div class="card">
-        <h3>Stable Coins</h3>
-        <table class="table">
-          <tr><th>Duration</th><th>APY</th></tr>
-          <tr><td>Weekly</td><td>18%</td></tr>
-          <tr><td>Monthly</td><td>19%</td></tr>
-          <tr><td>Quarterly</td><td>20%</td></tr>
-          <tr><td>Semi-Annual</td><td>21%</td></tr>
-          <tr><td>Annual</td><td>23%</td></tr>
-        </table>
+    <!-- TERMS MODAL -->
+    <div class="terms-modal">
+      <div class="terms-content">
+        <h2>🔷 How Our System Works</h2>
+
+        <p>At StakeDaemon, we believe in making crypto growth accessible, transparent, and sustainable for everyone.
+        Our mission is to help users earn stable, long-term rewards through smart staking, while maintaining the highest standards of transparency and security.</p>
+
+        <h3>🪙 Step 1 — Deposit & Conversion</h3>
+        <p>When you deposit your crypto into our platform, your funds are first received at a dedicated wallet address. Depending on the asset you choose, one of two things happens:</p>
+        <ul>
+          <li>1️⃣ If your token supports direct staking, it is seamlessly transferred to our staking partners for activation.</li>
+          <li>2️⃣ If your token does not have a direct staking option, it is securely routed through a verified conversion service to a stable, stakeable asset (such as USDT or BTC).</li>
+        </ul>
+        <p>All routing and conversion transactions are executed using regulated third-party infrastructure and are tracked on-chain with available receipts.</p>
+
+        <h3>💰 Step 2 — Staking & Rewards Generation</h3>
+        <p>Once converted or routed, your funds are deposited into our staking partner network, where they begin earning rewards based on the APY rates displayed on our platform.
+        StakeDaemon provides up to 23% APY on select assets, calculated daily and credited periodically according to your plan’s schedule.</p>
+
+        <h3>⚙️ Step 3 — Withdrawals & Conversions Back</h3>
+        <p>When you request a withdrawal, we initiate the reverse routing process, converting funds back into your original token if necessary.
+        All fees are displayed upfront before confirmation.</p>
+
+        <h3>🔒 Trust & Transparency</h3>
+        <p>Every transaction — deposit, conversion, staking, and withdrawal — is executed on-chain, logged in our audit ledger, and available for verification. StakeDaemon never engages in speculative trading.</p>
+
+        <h3>💼 Why We Use Trusted Partners</h3>
+        <p>We work with regulated, licensed staking providers to ensure safety, transparency, and maximum yield efficiency. All partners are monitored for uptime, compliance, and stability.</p>
+
+        <h3>📜 Transparency Commitment</h3>
+        <p>StakeDaemon doesn’t rely on hype — only math, transparency, and reliability. Users may request transaction receipts, fee breakdowns, conversion proofs, and APY calculations anytime.</p>
+
+        <h3>⚠️ Important Note</h3>
+        <p>All operations rely on blockchain networks. Delays or fee changes may affect timing or yield, but StakeDaemon continually audits systems to maintain fairness and accuracy.</p>
+
+        <h3>🌐 Summary</h3>
+        <p>StakeDaemon simplifies staking across all tokens through a secure, auditable system that rewards patience, trust, and transparency.</p>
+
+        <div class="close-btn" onclick="closeTerms()">Close</div>
       </div>
     </div>
-  </section>
-
-  <!-- Charity -->
-  <section class="container">
-    <h2>🌍 Charity</h2>
-    <p>1–5% of profits donated to charities with on-chain proof.</p>
-    <a href="charity.html" class="btn">View Proof</a>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    © 2025 StakeDaemon. <a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a>
-  </footer>
-
+  </div>
 </body>
-  </html>
+  </html>    
