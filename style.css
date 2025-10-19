@@ -1,104 +1,231 @@
-body {
-  background: #fffaf4;
-  font-family: "Fredoka", sans-serif;
-  color: #333;
+/* ===============================
+   GLOBAL STYLES — COMMON FOR ALL
+   Archivo Black Regular 400
+   =============================== */
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+:root {
+  /* Base Colors */
+  --black: #000000;
+  --white: #ffffff;
+  --orange: #f7931a;
+  --green: #00ff00;
+  --sky: #00c4ff;
+  --gold: #ffd700;
+
+  /* Transitions */
+  --transition: all 0.4s ease-in-out;
+
+  /* Shadows */
+  --soft-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  --glow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: 'Archivo Black', sans-serif;
 }
 
-/* Navbar */
-.navbar {
-  background: #ffde7d;
-  border-bottom: 4px solid #333;
-  box-shadow: 0 4px 0 #333;
+body {
+  background-color: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  transition: var(--transition);
 }
-.nav-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 15px 20px;
+
+/* ===============================
+   CENTERED CONTAINER
+   =============================== */
+.container {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
 }
-.logo {
-  font-size: 1.4rem;
-  font-weight: 700;
+
+/* ===============================
+   "WHO ARE YOU" SECTION
+   =============================== */
+h1 {
+  font-size: 2.8rem;
+  letter-spacing: 2px;
+  margin-bottom: 50px;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
 }
-.nav-links a {
-  margin-left: 20px;
-  text-decoration: none;
-  font-weight: 600;
-  color: #333;
-  transition: 0.2s;
+
+/* Button Styling */
+.option-btn {
+  padding: 18px 36px;
+  border: none;
+  border-radius: 50px;
+  margin: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--soft-shadow);
 }
-.nav-links a:hover {
-  color: #ff5e5e;
+
+.option-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
 }
-.nav-links .btn {
-  background: #ff9b9b;
-  padding: 6px 14px;
+
+/* Button Color Themes */
+.bitcoin { background-color: var(--orange); color: var(--black); }
+.beginner { background-color: var(--white); color: var(--black); }
+.meme { background-color: var(--green); color: var(--black); }
+.stable { background-color: var(--sky); color: var(--white); }
+.gold { background-color: var(--gold); color: var(--black); }
+
+/* ===============================
+   WORMHOLE ANIMATION
+   =============================== */
+@keyframes wormhole {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+    border-radius: 50%;
+  }
+  50% {
+    transform: scale(3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(10);
+    opacity: 0;
+  }
+}
+
+@keyframes wormhole-reverse {
+  0% {
+    transform: scale(10);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+.wormhole {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, #ffffff 10%, transparent 70%);
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  animation: wormhole 1.5s ease-in-out forwards;
+}
+
+.wormhole.reverse {
+  animation: wormhole-reverse 1.5s ease-in-out forwards;
+}
+
+/* ===============================
+   CALCULATOR STYLES
+   =============================== */
+.calculator {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  width: 85%;
+  max-width: 400px;
+  margin: 30px auto;
+  box-shadow: var(--soft-shadow);
+}
+
+.calculator label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.calculator input,
+.calculator select {
+  width: 100%;
+  padding: 10px;
+  border: none;
   border-radius: 8px;
-  color: #fff !important;
-  box-shadow: 3px 3px 0px #111;
+  margin-bottom: 15px;
+  font-size: 1rem;
 }
 
-/* Headings doodle style */
-h2, h3 {
-  color: #222;
-  font-weight: 700;
-  display: inline-block;
-  padding: 8px 16px;
-  background: #ffde7d;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 4px 4px 0px #333;
-}
-h2::after, h3::after {
-  content: "✨";
-  margin-left: 10px;
+.calculator button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-/* Tables */
-.coin-table {
+.calculator button:hover {
+  transform: scale(1.05);
+  background: #f5f5f5;
+}
+
+.result-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 6px 6px 0px #222;
-}
-.coin-table th, .coin-table td {
-  padding: 14px 18px;
-  text-align: left;
-}
-.coin-table th {
-  background: #ff9b9b;
-  color: #fff;
-}
-.coin-table tr:nth-child(even) {
-  background: #fff3f3;
+  margin-top: 15px;
 }
 
-/* Notes / Info box */
-.note {
-  margin-top: 25px;
-  font-size: 0.95rem;
-  color: #555;
-  background: #e4ffe7;
-  padding: 14px;
-  border-radius: 12px;
-  border: 2px dashed #333;
-  box-shadow: 3px 3px 0px #111;
+.result-table th,
+.result-table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Footer */
-footer {
-  margin-top: 50px;
-  padding: 20px;
-  text-align: center;
-  background: #ffde7d;
-  font-weight: 600;
-  border-top: 4px solid #333;
-  box-shadow: 0 -4px 0 #333;
+/* ===============================
+   NAVBAR (EXIT)
+   =============================== */
+.navbar {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+
+.exit-btn {
+  background: transparent;
+  color: inherit;
+  border: 2px solid currentColor;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.exit-btn:hover {
+  background: currentColor;
+  color: var(--black);
+}
+
+/* ===============================
+   ANIMATIONS
+   =============================== */
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  .option-btn { width: 80%; font-size: 1rem; }
 }
