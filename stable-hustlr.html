@@ -141,7 +141,6 @@
     text-align: center;
     font-size: 16px;
   }
-
 </style>
 </head>
 <body class="wormhole-enter">
@@ -164,11 +163,11 @@
       <h2>📈 Stable Staking Reward Calculator</h2>
       <input type="number" id="amount" class="calc-input" placeholder="Enter amount">
       <select id="duration">
-        <option value="15" data-days="7">Weekly — 15% APY</option>
-        <option value="25" data-days="30">Monthly — 25% APY</option>
-        <option value="50" data-days="90">Quarterly — 50% APY</option>
-        <option value="75" data-days="180">Half-Yearly — 75% APY</option>
-        <option value="100" data-days="365">Annually — 100% APY</option>
+        <option value="16" data-days="7">Weekly — 16% APY</option>
+        <option value="17.5" data-days="30">Monthly — 17.5% APY</option>
+        <option value="19" data-days="90">Quarterly — 19% APY</option>
+        <option value="20.5" data-days="180">Half-Yearly — 20.5% APY</option>
+        <option value="22.5" data-days="365">Annually — 22.5% APY</option>
       </select>
       <button class="calc-btn" onclick="calculateRewards()">Show Rewards</button>
 
@@ -183,14 +182,14 @@
     function calculateRewards() {
       const amount = parseFloat(document.getElementById('amount').value);
       const select = document.getElementById('duration');
-      const apy = parseFloat(select.value); // Annual rate
+      const apy = parseFloat(select.value);
       const days = parseInt(select.options[select.selectedIndex].dataset.days);
       const periodText = select.options[select.selectedIndex].text.split('—')[0].trim();
 
       if (!amount || amount <= 0) return alert('Please enter a valid amount');
 
-      // --- Correct APY math (prorated by days) ---
-      const reward = amount * (apy / 100) * (days / 365);
+      // --- Correct APY math with prorated duration ---
+      const reward = amount * ((1 + apy / 100) ** (days / 365) - 1);
       const total = amount + reward;
 
       const fmt = n => Number(n.toFixed(4)).toLocaleString();
@@ -220,4 +219,4 @@
   </script>
 
 </body>
-</html>
+ </html>
