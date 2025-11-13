@@ -1,54 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Google Login Test</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.44.2/dist/umd/supabase.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StakeSphere Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    button {
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #357ae8;
+    }
+  </style>
 </head>
-<body style="font-family: Arial; text-align:center; margin-top:100px;">
-  <h2>Google Login Test</h2>
-  <button id="loginBtn" style="padding:10px 20px; font-size:16px;">Sign in with Google</button>
-  <button id="logoutBtn" style="padding:10px 20px; font-size:16px; display:none;">Logout</button>
-  <p id="status"></p>
+<body>
+  <h1>StakeSphere Login</h1>
+  <button onclick="signInWithGoogle()">Sign in with Google</button>
 
   <script>
-    const SUPABASE_URL = "https://zgvluycfalorrgglyslf.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpndmx1eWNmYWxvcnJnZ2x5c2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTM3MzcsImV4cCI6MjA3ODUyOTczN30.0SbpFSQUzm0BEsbIfaCsggW6iM1-qqG3UqexdntNzvw";
+    const supabase = supabase.createClient(
+      'https://zgvluycfalorrgglyslf.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpndmx1eWNmYWxvcnJnZ2x5c2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTM3MzcsImV4cCI6MjA3ODUyOTczN30.0SbpFSQUzm0BEsbIfaCsggW6iM1-qqG3UqexdntNzvw'
+    );
 
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function checkUser() {
-      const { data, error } = await client.auth.getUser();
-      const user = data?.user;
-      const status = document.getElementById('status');
-      const loginBtn = document.getElementById('loginBtn');
-      const logoutBtn = document.getElementById('logoutBtn');
-
-      if (user) {
-        status.innerHTML = `✅ Logged in as: <b>${user.email}</b>`;
-        loginBtn.style.display = 'none';
-        logoutBtn.style.display = 'inline-block';
-      } else {
-        status.innerHTML = 'Not logged in';
-        loginBtn.style.display = 'inline-block';
-        logoutBtn.style.display = 'none';
+    async function signInWithGoogle() {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) {
+        alert('Error signing in: ' + error.message);
       }
     }
-
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-      const { data, error } = await client.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: window.location.href }
-      });
-      if (error) console.error('Error:', error.message);
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      await client.auth.signOut();
-      checkUser();
-    });
-
-    checkUser();
   </script>
 </body>
 </html>
