@@ -1,70 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MineMechanics | Google Login</title>
-</head>
-<body style="background:#0d1117; color:#fff; font-family:Arial; text-align:center; margin-top:50px;">
-  <h2>Welcome to MineMechanics</h2>
-  <button id="loginBtn" style="padding:10px 20px; border:none; border-radius:8px; background:#4CAF50; color:white; cursor:pointer;">
-    Sign in with Google
-  </button>
+<html>
+<body>
+<button id="loginBtn">Login with Google</button>
 
-  <div id="userInfo" style="margin-top:30px;"></div>
+<div id="user"></div>
 
-  <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-    const supabase = createClient(
-      'https://zgvluycfalorrgglyslf.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpndmx1eWNmYWxvcnJnZ2x5c2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTM3MzcsImV4cCI6MjA3ODUyOTczN30.0SbpFSQUzm0BEsbIfaCsggW6iM1-qqG3UqexdntNzvw'
-    )
+const supabase = createClient(
+  'https://zgvluycfalorrgglyslf.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpndmx1eWNmYWxvcnJnZ2x5c2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTM3MzcsImV4cCI6MjA3ODUyOTczN30.0SbpFSQUzm0BEsbIfaCsggW6iM1-qqG3UqexdntNzvw'
+)
 
-    // Check if user already logged in
-    const { data: { user } } = await supabase.auth.getUser()
-    if (user) showUser(user)
-
-    // Login button
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: 'https://stakedaemon.github.io' // your website domain
-        }
-      })
-      if (error) console.error(error)
-    })
-
-    // Function to display user info & save to Supabase
-    async function showUser(user) {
-      document.getElementById('userInfo').innerHTML = `
-        <h3>Welcome, ${user.user_metadata.full_name}</h3>
-        <p>Email: ${user.email}</p>
-        <img src="${user.user_metadata.avatar_url}" width="100" height="100" style="border-radius:50%; margin-top:10px;">
-      `
-
-      // Store user in database (if not already there)
-      const { data: existingUser } = await supabase
-        .from('users')
-        .select('id')
-        .eq('id', user.id)
-        .single()
-
-      if (!existingUser) {
-        await supabase.from('users').insert([{
-          id: user.id,
-          username: user.user_metadata.full_name,
-          email: user.email,
-          created_at: new Date().toISOString()
-        }])
-      }
+document.getElementById("loginBtn").onclick = async () => {
+  await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: "https://stake-daemon-github-io.vercel.app/auth/callback"
     }
+  })
+}
 
-    // After redirect (post-login)
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) showUser(session.user)
-    })
-  </script>
+// listens after redirect
+supabase.auth.onAuthStateChange(async (event, session) => {
+  if (session?.user) {
+    document.getElementById("user").innerHTML =
+      "Logged in: " + session.user.email
+  }
+})
+</script>
 </body>
 </html>
