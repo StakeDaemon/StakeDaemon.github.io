@@ -2,77 +2,91 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Wallet Login Demo</title>
+  <title>Wallet Debug Page</title>
 </head>
-<body style="background:#111; color:white; font-family:Arial; text-align:center; padding-top:50px;">
+<body style="background:#111; color:white; font-family:Arial; text-align:center; padding-top:40px;">
 
-  <h2>Wallet Login Test</h2>
-  <p>Connect a wallet and save to Supabase users table</p>
+  <h2>Wallet Connection Debug</h2>
 
   <button id="connectETH" style="padding:10px 20px; margin:10px;">Connect Ethereum</button>
   <button id="connectSOL" style="padding:10px 20px; margin:10px;">Connect Solana</button>
 
-  <div id="result" style="margin-top:20px; font-size:18px;"></div>
+  <pre id="debug" style="text-align:left; margin:30px auto; width:90%; background:#000; padding:20px; border-radius:10px; color:#00ff90; max-width:600px;"></pre>
 
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js"
 
     const supabase = createClient(
-      "https://zgvluycfalorrgglyslf.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpndmx1eWNmYWxvcnJnZ2x5c2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTM3MzcsImV4cCI6MjA3ODUyOTczN30.0SbpFSQUzm0BEsbIfaCsggW6iM1-qqG3UqexdntNzvw"
+      "YOUR_SUPABASE_URL",
+      "YOUR_SUPABASE_ANON_KEY"
     )
 
-    const result = document.getElementById("result")
+    const debug = document.getElementById("debug")
 
-    // 1️⃣ CHECK USER LOGIN  
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      result.innerHTML = "❌ You are not logged in. Login first."
-    } else {
-      result.innerHTML = "Logged in as: " + user.email
+    function log(x) {
+      debug.textContent += x + "\n"
     }
 
-    // 2️⃣ CONNECT ETH (MetaMask)
+    log("🔍 Checking user session...")
+
+    const { data: { user }, error: userErr } = await supabase.auth.getUser()
+
+    if (userErr) log("❌ auth.getUser ERROR: " + JSON.stringify(userErr, null, 2))
+
+    if (!user) {
+      log("❌ No Supabase user found (you must login first).")
+    } else {
+      log("✅ User loaded: " + user.id)
+    }
+
+    // ETH Connect
     document.getElementById("connectETH").onclick = async () => {
+      log("\n=== ETHEREUM CONNECT ===")
+
       if (!window.ethereum) {
-        result.innerHTML = "❌ MetaMask not found."
+        log("❌ MetaMask not installed.")
         return
       }
 
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
-      const ethAddress = accounts[0]
+      const eth = accounts[0]
 
-      result.innerHTML = "ETH Wallet: " + ethAddress + "<br>Saving to Supabase..."
+      log("ETH Address: " + eth)
+      log("Saving to Supabase...")
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("users")
-        .update({ eth_wallet: ethAddress })
+        .update({ eth_wallet: eth })
         .eq("id", user.id)
+        .select()
 
-      result.innerHTML += error ? "<br>❌ Error saving." : "<br>✅ Saved!"
+      log("Supabase response: " + JSON.stringify({ data, error }, null, 2))
     }
 
-    // 3️⃣ CONNECT SOL (Phantom)
+    // SOL Connect
     document.getElementById("connectSOL").onclick = async () => {
+      log("\n=== SOLANA CONNECT ===")
+
       const provider = window.phantom?.solana
       if (!provider?.isPhantom) {
-        result.innerHTML = "❌ Phantom Wallet not found."
+        log("❌ Phantom not installed.")
         return
       }
 
       const resp = await provider.connect()
-      const solAddress = resp.publicKey.toString()
+      const sol = resp.publicKey.toString()
 
-      result.innerHTML = "SOL Wallet: " + solAddress + "<br>Saving to Supabase..."
+      log("SOL Address: " + sol)
+      log("Saving to Supabase...")
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("users")
-        .update({ sol_wallet: solAddress })
+        .update({ sol_wallet: sol })
         .eq("id", user.id)
+        .select()
 
-      result.innerHTML += error ? "<br>❌ Error saving." : "<br>✅ Saved!"
+      log("Supabase response: " + JSON.stringify({ data, error }, null, 2))
     }
-
   </script>
 </body>
 </html>
