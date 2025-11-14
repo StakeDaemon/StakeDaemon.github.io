@@ -1,34 +1,78 @@
 <!DOCTYPE html>
 <html>
-<body>
-<button id="loginBtn">Login with Google</button>
+<head>
+  <meta charset="UTF-8">
+  <title>Wallet Login Demo</title>
+</head>
+<body style="background:#111; color:white; font-family:Arial; text-align:center; padding-top:50px;">
 
-<div id="user"></div>
+  <h2>Wallet Login Test</h2>
+  <p>Connect a wallet and save to Supabase users table</p>
 
-<script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+  <button id="connectETH" style="padding:10px 20px; margin:10px;">Connect Ethereum</button>
+  <button id="connectSOL" style="padding:10px 20px; margin:10px;">Connect Solana</button>
 
-const supabase = createClient(
-  'https://zgvluycfalorrgglyslf.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpndmx1eWNmYWxvcnJnZ2x5c2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTM3MzcsImV4cCI6MjA3ODUyOTczN30.0SbpFSQUzm0BEsbIfaCsggW6iM1-qqG3UqexdntNzvw'
-)
+  <div id="result" style="margin-top:20px; font-size:18px;"></div>
 
-document.getElementById("loginBtn").onclick = async () => {
-  await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: "https://stake-daemon-github-io.vercel.app/auth/callback"
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js"
+
+    const supabase = createClient(
+      "https://zgvluycfalorrgglyslf.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpndmx1eWNmYWxvcnJnZ2x5c2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTM3MzcsImV4cCI6MjA3ODUyOTczN30.0SbpFSQUzm0BEsbIfaCsggW6iM1-qqG3UqexdntNzvw"
+    )
+
+    const result = document.getElementById("result")
+
+    // 1️⃣ CHECK USER LOGIN  
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      result.innerHTML = "❌ You are not logged in. Login first."
+    } else {
+      result.innerHTML = "Logged in as: " + user.email
     }
-  })
-}
 
-// listens after redirect
-supabase.auth.onAuthStateChange(async (event, session) => {
-  if (session?.user) {
-    document.getElementById("user").innerHTML =
-      "Logged in: " + session.user.email
-  }
-})
-</script>
+    // 2️⃣ CONNECT ETH (MetaMask)
+    document.getElementById("connectETH").onclick = async () => {
+      if (!window.ethereum) {
+        result.innerHTML = "❌ MetaMask not found."
+        return
+      }
+
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
+      const ethAddress = accounts[0]
+
+      result.innerHTML = "ETH Wallet: " + ethAddress + "<br>Saving to Supabase..."
+
+      const { error } = await supabase
+        .from("users")
+        .update({ eth_wallet: ethAddress })
+        .eq("id", user.id)
+
+      result.innerHTML += error ? "<br>❌ Error saving." : "<br>✅ Saved!"
+    }
+
+    // 3️⃣ CONNECT SOL (Phantom)
+    document.getElementById("connectSOL").onclick = async () => {
+      const provider = window.phantom?.solana
+      if (!provider?.isPhantom) {
+        result.innerHTML = "❌ Phantom Wallet not found."
+        return
+      }
+
+      const resp = await provider.connect()
+      const solAddress = resp.publicKey.toString()
+
+      result.innerHTML = "SOL Wallet: " + solAddress + "<br>Saving to Supabase..."
+
+      const { error } = await supabase
+        .from("users")
+        .update({ sol_wallet: solAddress })
+        .eq("id", user.id)
+
+      result.innerHTML += error ? "<br>❌ Error saving." : "<br>✅ Saved!"
+    }
+
+  </script>
 </body>
 </html>
