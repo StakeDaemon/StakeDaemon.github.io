@@ -2,91 +2,120 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Wallet Debug Page</title>
+  <title>Solana Login Test</title>
 </head>
-<body style="background:#111; color:white; font-family:Arial; text-align:center; padding-top:40px;">
 
-  <h2>Wallet Connection Debug</h2>
+<body style="background:#0d1117; color:white; font-family:monospace; padding:20px;">
+  <h2>Solana Login Test</h2>
 
-  <button id="connectETH" style="padding:10px 20px; margin:10px;">Connect Ethereum</button>
-  <button id="connectSOL" style="padding:10px 20px; margin:10px;">Connect Solana</button>
+  <button id="connectWalletBtn" style="padding:10px 20px;">Connect Solana Wallet</button>
+  <button id="loginBtn" style="padding:10px 20px; margin-left:10px;">Login with Solana</button>
 
-  <pre id="debug" style="text-align:left; margin:30px auto; width:90%; background:#000; padding:20px; border-radius:10px; color:#00ff90; max-width:600px;"></pre>
+  <h3>Logs:</h3>
+  <pre id="logs" style="background:black; padding:15px; height:400px; overflow:auto;"></pre>
 
   <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js"
+    import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
+    const log = (msg) => {
+      const l = document.getElementById("logs");
+      l.textContent += msg + "\n";
+      l.scrollTop = l.scrollHeight;
+    };
+
+    // --- SUPABASE SETUP ---
     const supabase = createClient(
       "https://zgvluycfalorrgglyslf.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpndmx1eWNmYWxvcnJnZ2x5c2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NTM3MzcsImV4cCI6MjA3ODUyOTczN30.0SbpFSQUzm0BEsbIfaCsggW6iM1-qqG3UqexdntNzvw"
-    )
+    );
 
-    const debug = document.getElementById("debug")
+    // --- GLOBAL STATE ---
+    let walletAddress = null;
 
-    function log(x) {
-      debug.textContent += x + "\n"
-    }
+    // --- Connect Phantom Wallet ---
+    document.getElementById("connectWalletBtn").onclick = async () => {
+      try {
+        const provider = window.phantom?.solana;
+        if (!provider) {
+          log("❌ Phantom wallet not found!");
+          return;
+        }
 
-    log("🔍 Checking user session...")
+        const resp = await provider.connect();
+        walletAddress = resp.publicKey.toString();
 
-    const { data: { user }, error: userErr } = await supabase.auth.getUser()
+        log("🔗 Connected Wallet:");
+        log(walletAddress);
+      } catch (err) {
+        log("❌ Wallet Connect Error: " + err.message);
+      }
+    };
 
-    if (userErr) log("❌ auth.getUser ERROR: " + JSON.stringify(userErr, null, 2))
-
-    if (!user) {
-      log("❌ No Supabase user found (you must login first).")
-    } else {
-      log("✅ User loaded: " + user.id)
-    }
-
-    // ETH Connect
-    document.getElementById("connectETH").onclick = async () => {
-      log("\n=== ETHEREUM CONNECT ===")
-
-      if (!window.ethereum) {
-        log("❌ MetaMask not installed.")
-        return
+    // --- LOGIN WITH SOLANA via SUPABASE ---
+    document.getElementById("loginBtn").onclick = async () => {
+      if (!walletAddress) {
+        log("❌ Connect wallet first!");
+        return;
       }
 
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
-      const eth = accounts[0]
+      log("🔁 Starting Supabase Sign-in with Solana...");
 
-      log("ETH Address: " + eth)
-      log("Saving to Supabase...")
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "solana",
+        options: {
+          redirectTo: "https://stakedaemon.github.io/login.html"
+        }
+      });
 
-      const { data, error } = await supabase
-        .from("users")
-        .update({ eth_wallet: eth })
-        .eq("id", user.id)
-        .select()
+      if (error) log("❌ Login Error: " + JSON.stringify(error));
+      else log("✅ Login request sent, waiting for redirect...");
+    };
 
-      log("Supabase response: " + JSON.stringify({ data, error }, null, 2))
-    }
+    // --- AFTER REDIRECT: CHECK SESSION ---
+    const check = async () => {
+      log("🔍 Checking session...");
 
-    // SOL Connect
-    document.getElementById("connectSOL").onclick = async () => {
-      log("\n=== SOLANA CONNECT ===")
+      const { data, error } = await supabase.auth.getUser();
 
-      const provider = window.phantom?.solana
-      if (!provider?.isPhantom) {
-        log("❌ Phantom not installed.")
-        return
+      if (error) {
+        log("❌ No session: " + error.message);
+        return;
       }
 
-      const resp = await provider.connect()
-      const sol = resp.publicKey.toString()
+      if (!data?.user) {
+        log("❌ No Supabase user found");
+        return;
+      }
 
-      log("SOL Address: " + sol)
-      log("Saving to Supabase...")
+      const user = data.user;
+      log("🎉 Logged in as: " + user.id);
 
-      const { data, error } = await supabase
+      // Now save wallet to DB
+      saveWallet(user.id);
+    };
+
+    async function saveWallet(userId) {
+      log("💾 Saving wallet to Supabase...");
+
+      const { error } = await supabase
         .from("users")
-        .update({ sol_wallet: sol })
-        .eq("id", user.id)
-        .select()
+        .upsert({
+          id: userId,
+          sol_wallet: walletAddress || "no-wallet"
+        });
 
-      log("Supabase response: " + JSON.stringify({ data, error }, null, 2))
+      if (error) log("❌ DB Save Error: " + error.message);
+      else log("✅ Wallet saved successfully!");
     }
+
+    // Trigger on every load
+    check();
+
+    // Listen login event
+    supabase.auth.onAuthStateChange((event, session) => {
+      log("⚡ Auth Event: " + event);
+      if (session) log("🟩 Session user: " + session.user.id);
+    });
   </script>
 </body>
 </html>
